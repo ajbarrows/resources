@@ -9,9 +9,13 @@
 #SBATCH --output=%x_%j.out		# output file
 #SBATCH --mail-type=ALL			# prompts Slurm to send you emails when the job starts, completes, or fails
 
+# Load R packages
+spack load r@3.6.3
+spack load r-dplyr@0.8.3
+spack load r-tidyr@0.8.3
 
-source ${HOME}/.bashrc
-conda activate MyNewEnvironment		# loads your conda environment
+# source ${HOME}/.bashrc
+# conda activate MyNewEnvironment		# loads your conda environment
 
 cd ${HOME}/scratch/R_vacc/R		# this is the directory of your project's scripts
 set -x
