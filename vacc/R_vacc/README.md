@@ -41,13 +41,15 @@ This connection should proceed without requiring you to enter your netID passwor
 
 ### Install a Conda Environment
 
-Follow the steps on [this](https://docs.anaconda.com/anaconda/user-guide/tasks/using-r-language/) page to (1) install Anaconda, (2) create a `conda` environment, and (3) activate the environment. 
+Follow the steps on [this page ](https://www.uvm.edu/vacc/kb/knowledge-base/install-anaconda-or-miniconda/) to install Anaconda on your VACC user account.
 
 When you create an environment, you should attempt to include the core packages you will require. You must also include `r-base` and `r-essentials`, which is the collection of packages that make up R's core functionalities. You may also want the popular `tidyverse` package, which installs component packages like `dplyr`, `tidyr`, and `ggplot2`. For example, to create an environment called `MyNewEnvironment`:
 
 		$ conda create -n MyNewEnvironment r-essentials r-base r-tidyverse
 		
 Now there's an installation of R and the core packages you'll need for your project. **You should make a new environemnt for each project.**
+
+If you encounter errors like `Solving environment` taking forever, 
 
 In order to access the R installation and libraries:
 
@@ -57,7 +59,7 @@ In order to access the R installation and libraries:
 
 The directory where this `README.md` file is saved is (arguably) an example of an appropriate file structure for a data science project. Copy this directory to Bluemoon by opening a Terminal window from this directory. The easiest way to do this on macOS is by right-clicking the *parent* (that is, `R_vacc/`) directory and selecting 'New Terminal at Folder'. In the terminal window that opens, verify you're in the right place:
 
-		$ 	tony@tonyMacBookPro R_vacc
+		$ tony@tonyMacBookPro R_vacc
 
 Now, use the Unix command `rsync` to copy this directory to Bluemoon. The basic structure of an `rsync` command is:
 
