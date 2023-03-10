@@ -3,13 +3,14 @@
 # 20230309
 
 library(dplyr)
+library(tidyr)
 
 reshape_age <- function(fpath) {
   df <- read.csv(fpath)
   
   # create long-format data
   df_long <- df %>%
-    tidyr::pivot_longer(
+    pivot_longer(
       cols = starts_with("age"),
       names_to = "timepoint",
       values_to = "age"

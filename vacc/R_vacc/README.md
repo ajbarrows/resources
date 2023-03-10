@@ -1,10 +1,13 @@
 # Running R Processes on the Vermont Advanced Computing Core (VACC)
 
+Note: This guide presumes you're using a Unix-like operating system. I suspect you can perform the same tasks using PowerShell on Windows (likely verbatim), but I won't attest to that.
+
 ## Overview
 
-R users are typically accustomed to running scripts interactively (i.e., opening RStudio, creating a script or R Markdown document, and running it bit by bit). When using the VACC (or other compute clusters), it's important to drop this mindset. 
+Some R users are accustomed to running scripts interactively (i.e., opening RStudio, creating a script or R Markdown document, and running it bit by bit). When using the VACC (or other compute clusters), it's important to drop this mindset. 
 
 R has a built-in function [`Rscript`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/Rscript), which allows the user to call a `.R` file from a Unix terminal or Bash script. 
+
 <!---
 ### Environments
 
@@ -21,8 +24,12 @@ Unfortunately, R lacks robust support for the kinds of virtual environments that
 
 A key limitation is that packages come through Anaconda's `conda-forge` channel, rather than through [CRAN](https://cran.r-project.org/). In principle, this could mean that CRAN has a newer version than `conda-forge` of an R library you're looking to use. In practice, I find this rarely matters, and the more important thing is ensuring you use the _same_ version for all aspects of your project. Or, at the very least, you know _which_ version you used if ever you need to chase down a bug.
 
+Note: There are, of course, other channels. However, I've found each to be _less_ reliable than `conda-forge` for R packages.
+
+<!---
 #### Package Management
 Another (more tedious, but potentially more straightforward) is to use one of the package managers that the VACC already has installed. If Anaconda environments aren't working out, you can use Spack. Instructions are specified on [this page. ](https://www.uvm.edu/vacc/kb/knowledge-base/load-software-packages/#modules).
+--->
 
 ### Batch Computing
 
@@ -51,7 +58,7 @@ You'll likely see a message saying that the "authenticity" of the host cannot be
 This connection should proceed without requiring you to enter your netID password.
 
 
-
+<!---
 ### Gather Necessary packages
 
 While connected to Bluemoon, use
@@ -64,7 +71,35 @@ to search for available packages. The easiest way to load packages is to add the
 		spack load r-dplyr@0.8.3
 		spack load r-tidyr@0.8.3
 		
-		
+--->
+
+### Install a Conda Environment
+
+If you want to try using Anaconda environments...
+
+Follow the steps on [this page ](https://www.uvm.edu/vacc/kb/knowledge-base/install-anaconda-or-miniconda/) to install Anaconda on your VACC user account.
+
+After the installation is complete, make sure to run
+
+		$ conda update conda
+
+to ensure packages are up to date. If it fusses about `channel_priority = 'strict'`:
+
+		$ conda config --set channel_priority false
+
+When you create an environment, you should attempt to include the core packages you will require. You must also include `r-base` and `r-essentials`, which is the collection of packages that make up R's core functionalities. You may also want the popular `tidyverse` package, which installs component packages like `dplyr`, `tidyr`, and `ggplot2`. For example, to create an environment called `MyNewEnvironment`:
+
+		$ conda create -n MyNewEnvironment
+		$ conda activate MyNewEnvironment
+		$ conda install -c conda-forge r-base r-essentials r-tidyverse
+
+This may take a while. Now there's an installation of R and the core packages you'll need for your project. **You should make a new environemnt for each project.**
+
+
+In order to access the R installation and libraries:
+
+		$ conda activate MyNewEnvironment
+
 
 ### Configure a Project for Batch Submission
 
@@ -80,7 +115,7 @@ where `local` is the file or directory you wish to copy, and `remote` is the tar
 
 So, to copy this project's directory to Bluemoon:
 
-		$ rsync -avP ./ netID@vacc-user1.uvm.edu:scratch/
+		$ rsync -avP . netID@vacc-user1.uvm.edu:scratch/R_vacc
 
 Notice the `./` which refers to the current directory. Also notice the `:`, which allows you to specify the remote directory. 
 
@@ -124,23 +159,7 @@ Now that the job is complete, you want to retrieve the output. Navigate to the `
 ------
 
 
-### Install a Conda Environment
 
-If you want to try using Anaconda environments...
-
-Follow the steps on [this page ](https://www.uvm.edu/vacc/kb/knowledge-base/install-anaconda-or-miniconda/) to install Anaconda on your VACC user account.
-
-When you create an environment, you should attempt to include the core packages you will require. You must also include `r-base` and `r-essentials`, which is the collection of packages that make up R's core functionalities. You may also want the popular `tidyverse` package, which installs component packages like `dplyr`, `tidyr`, and `ggplot2`. For example, to create an environment called `MyNewEnvironment`:
-
-		$ conda create -n MyNewEnvironment r-essentials r-base r-tidyverse
-		
-Now there's an installation of R and the core packages you'll need for your project. **You should make a new environemnt for each project.**
-
-If you encounter errors like `Solving environment` taking forever, 
-
-In order to access the R installation and libraries:
-
-		$ conda activate MyNewEnvironment
 
 
 
