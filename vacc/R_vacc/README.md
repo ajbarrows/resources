@@ -8,13 +8,6 @@ Some R users are accustomed to running scripts interactively (i.e., opening RStu
 
 R has a built-in function [`Rscript`](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/Rscript), which allows the user to call a `.R` file from a Unix terminal or Bash script. 
 
-<!---
-### Environments
-
-The first step toward running R scripts on the VACC is to install R in a way that's accessible through your user account. Unfortunately, R lacks robust support for the kinds of virtual environments that Python users are accustomed to seeing. However, Anaconda, the data science platform popular with Python users, offers [limited support](https://docs.anaconda.com/anaconda/user-guide/tasks/using-r-language/) for the R language. 
-
-A key limitation is that packages come through Anaconda's `conda-forge` channel, rather than through [CRAN](https://cran.r-project.org/). In principle, this could mean that CRAN has a newer version than `conda-forge` of an R library you're looking to use. In practice, I find this rarely matters, and the more important thing is ensuring you use the _same_ version for all aspects of your project. Or, at the very least, you know _which_ version you used if ever you need to chase down a bug.
---->
 
 ### Package Management
 The first step toward running R scripts on the VACC is to install R in a way that's accessible through your user account. One way to do this is to use an environment.
@@ -101,6 +94,11 @@ In order to access the R installation and libraries:
 		$ conda activate MyNewEnvironment
 
 
+If, in the course of your projct, you need to add additional packages, install them using:
+
+		$ conda install --name <conda_env_name> -c <channel_name> <package_name>
+		
+
 ### Configure a Project for Batch Submission
 
 The directory where this `README.md` file is saved is (arguably) an example of an appropriate file structure for a data science project. Copy this directory to Bluemoon by opening a Terminal window from this directory. The easiest way to do this on macOS is by right-clicking the *parent* (that is, `R_vacc/`) directory and selecting 'New Terminal at Folder'. In the terminal window that opens, verify you're in the right place:
@@ -121,18 +119,7 @@ Notice the `./` which refers to the current directory. Also notice the `:`, whic
 
 ### Run the Job
 
-I have included a sample Bash script designed to submit your job to Slurm. There are many, many configuration options. The most important ones:
-
-		#SBATCH --partition=short			# use Bluemoon for lengthy jobs
-		#SBATCH --nodes=1					# number of compute nodes -- usually no need to change
-		#SBATCH --ntasks=2					# number of processor cores -- important for parallelized code
-		#SBATCH --time=3:00					# expected job time: estimate this correctly. If too short, your job won't complete.
-		#SBATCH --mem=2G						# amount of RAM
-		#SBATCH --job-name=R_vacc_test	# job name for monitoring
-		#SBATCH --output=%x_%j.out			# output file
-		#SBATCH --mail-type=ALL				# prompts Slurm to send you emails when the job starts, completes, or fails
-
-These parameters will work for a very short task, like the one in this guide. You'll want to consult the [VACC's documentation](https://www.uvm.edu/vacc/kb/knowledge-base/write-submit-job-bluemoon/) for configuring larger jobs. 
+I have included a sample Bash script designed to submit your job to Slurm. There are many, many configuration options. Those parameters will work for a very short task, like the one in this guide. You'll want to consult the [VACC's documentation](https://www.uvm.edu/vacc/kb/knowledge-base/write-submit-job-bluemoon/) for configuring larger jobs. 
 
 In the Terminal connected to Bluemoon by SSH, navigate to the directory you just placed:
 
